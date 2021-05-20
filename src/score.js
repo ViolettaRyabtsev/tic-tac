@@ -1,5 +1,5 @@
 import React from "react";
-
+import { AiFillCloseCircle } from "react-icons/ai";
 import "./App.css";
 class Play extends React.Component {
   constructor(props) {
@@ -18,15 +18,13 @@ class Play extends React.Component {
       <div className="modal" id="modal">
         <h2 className="content">{this.props.children}</h2>{" "}
         <div className="actions">
-          <button
+          <AiFillCloseCircle
             onClick={(e) => {
               this.onClose(e);
             }}
             className="toggle-button"
             id="centered-toggle-button"
-          >
-            close
-          </button>
+          />
         </div>
       </div>
     );

@@ -2,7 +2,16 @@ import React from "react";
 import "./App.css";
 class WinnerBoard extends React.Component {
   render() {
-    return <h1 className="winner-board">Top winners of the game</h1>;
+    return (
+      <div className="winner-board">
+        <h2>Top winners of the game</h2>
+        <ul className="winners-box">
+          <li>
+            <h2>{this.props.winner.name}</h2>
+          </li>
+        </ul>
+      </div>
+    );
   }
 }
 

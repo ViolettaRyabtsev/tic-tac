@@ -27,6 +27,7 @@ button {
 .winner-board {
   margin-left: 50px;
   color: aliceblue;
+  width: 300px;
 }
 
 h3 {
@@ -56,8 +57,10 @@ h3 {
 
 .actions {
   border-top: 1px solid rgb(248, 245, 245);
-  background: rgb(0, 66, 128);
+  color: rgb(231, 19, 19);
+
   padding: 0.5rem 1rem;
+  margin-top: 40px;
 }
 .button {
   border: 0;
@@ -87,4 +90,9 @@ input {
 
 .grade {
   margin-right: 50px;
+}
+
+.winners-box {
+  background-color: rosybrown;
+  border-bottom: rgb(218, 27, 27);
 }

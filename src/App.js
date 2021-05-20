@@ -11,6 +11,19 @@ class App extends React.Component {
       squares: Array(9).fill(null),
       history: [],
       show: false,
+      user: {
+        name: "",
+        comment: "",
+      },
+      winner: {
+        name: "",
+      },
+      score: {
+        win: 0,
+        draw: 0,
+        lose: 0,
+      },
+      status: "",
     };
     this.handleClick = this.handleClick.bind(this);
     this.showModal = this.showModal.bind(this);
@@ -29,18 +42,20 @@ class App extends React.Component {
     for (let i = 0; i < winCombinations.length; i++) {
       const [a, b, c] = winCombinations[i];
       if (history[a] === history[b] && history[b] === history[c]) {
+        console.log("do we ever get here? ");
         return history[a];
       }
     }
   }
   handleClick(i) {
-    const squares = this.state.squares.slice(); //?
-    squares[i] = this.state.currentMoveX ? "X" : "O";
+    const copyArr = this.state.squares.slice(); //?
+    copyArr[i] = this.state.currentMoveX ? "X" : "O";
     this.setState({
-      squares: squares,
+      squares: copyArr,
       currentMoveX: !this.state.currentMoveX,
-      history: squares,
+      //history: squares,
     });
+    this.saveStatus(copyArr);
   }
   renderButton(i) {
     return (
@@ -56,21 +71,55 @@ class App extends React.Component {
       show: !this.state.show,
     });
   }
-  render() {
-    console.log(this.state.history, "this is here ");
-    const winner = this.colculateWinner(this.state.history);
-    let status;
+
+  handleChange = (e) => {
+    this.setState({
+      user: {
+        name: e.target.value,
+      },
+    });
+  };
+
+  handleUserInformation = (e) => {
+    this.setState({
+      winner: {
+        name: this.state.user.name,
+      },
+    });
+  };
+
+  saveStatus = (board) => {
+    console.log(board, "history");
+    const winner = this.colculateWinner(board);
+
     if (winner) {
-      status = "You win!";
+      this.setState({
+        status: "You win!",
+        score: {
+          win: +1,
+          lose: +0,
+          draw: 0,
+        },
+      });
     } else {
-      status = "next step: " + (this.state.currentMoveX ? "X" : "O");
+      this.setState({
+        status: "next step: " + (this.state.currentMoveX ? "X" : "O"),
+        score: {
+          win: +0,
+          lose: +1,
+          draw: 0,
+        },
+      });
     }
+  };
+
+  render() {
     return (
       <div className="App">
         <div className="grade">
-          <h2> 0 win</h2>
-          <h2> 0 draw</h2>
-          <h2>0 lose</h2>
+          <h2> {this.state.score.win} win</h2>
+          <h2> {this.state.score.draw} draw</h2>
+          <h2>{this.state.score.lose} lose</h2>
         </div>
         <div className="board">
           <div>
@@ -88,18 +137,22 @@ class App extends React.Component {
             {this.renderButton(7)}
             {this.renderButton(8)}
           </div>
-          <h2>{status}</h2>
+          <h2>{this.state.status}</h2>
           <button onClick={(e) => this.showModal()}> save result </button>
           <Play onClose={this.showModal} show={this.state.show}>
             <form className="form">
               <label>Name</label>
-              <input className="name-label"></input>
-              <label>Comment</label>
-              <input></input>
+              <input
+                value={this.state.user.name}
+                onChange={this.handleChange}
+                className="name-label"
+              ></input>
+              <label>Win {this.state.score.win} times </label>
             </form>
+            <button onClick={(e) => this.handleUserInformation()}>Save</button>
           </Play>
         </div>
-        <WinnerBoard />
+        <WinnerBoard winner={this.state.winner} />
       </div>
     );
   }
